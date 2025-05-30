@@ -13,10 +13,16 @@ import { plainToInstance } from 'class-transformer';
 export class UserService {
   private users: User[] = [];
 
-  private omitPassword(user: User): Omit<User, 'password'> {
-    const userCopy = { ...user };
-    delete userCopy.password;
-    return userCopy;
+  findAll() {
+    return plainToInstance(User, this.users);
+  }
+
+  findOne(id: string) {
+    const user = this.users.find((u) => u.id === id);
+
+    if (!user) throw new NotFoundException(`User with id ${id} not found`);
+
+    return plainToInstance(User, user);
   }
 
   create(dto: CreateUserDto) {
@@ -36,19 +42,7 @@ export class UserService {
     return plainToInstance(User, newUser);
   }
 
-  findAll() {
-    return plainToInstance(User, this.users);
-  }
-
-  findOne(id: string) {
-    const user = this.users.find((u) => u.id === id);
-
-    if (!user) throw new NotFoundException(`User with id ${id} not found`);
-
-    return plainToInstance(User, user);
-  }
-
-  update(id: string, dto: UpdateUserDto): Omit<User, 'password'> {
+  update(id: string, dto: UpdateUserDto) {
     const user = this.users.find((u) => u.id === id);
 
     if (!user) throw new NotFoundException(`User with id ${id} not found`);
