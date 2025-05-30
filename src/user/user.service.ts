@@ -7,6 +7,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { randomUUID } from 'node:crypto';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class UserService {
@@ -32,19 +33,19 @@ export class UserService {
 
     this.users.push(newUser);
 
-    return this.omitPassword(newUser);
+    return plainToInstance(User, newUser);
   }
 
-  findAll(): Omit<User, 'password'>[] {
-    return this.users.map(this.omitPassword);
+  findAll() {
+    return plainToInstance(User, this.users);
   }
 
-  findOne(id: string): Omit<User, 'password'> {
+  findOne(id: string) {
     const user = this.users.find((u) => u.id === id);
 
     if (!user) throw new NotFoundException(`User with id ${id} not found`);
 
-    return this.omitPassword(user);
+    return plainToInstance(User, user);
   }
 
   update(id: string, dto: UpdateUserDto): Omit<User, 'password'> {
@@ -59,7 +60,7 @@ export class UserService {
     user.version++;
     user.updatedAt = Date.now();
 
-    return this.omitPassword(user);
+    return plainToInstance(User, user);
   }
 
   remove(id: string) {

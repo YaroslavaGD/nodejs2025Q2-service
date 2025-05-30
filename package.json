@@ -22,7 +22,12 @@
     "test:refresh": "cross-env TEST_MODE=auth jest --testPathPattern refresh.e2e.spec.ts --noStackTrace --runInBand",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test-users": "npm test -- test/users.e2e.spec.ts",
+    "test-artists": "npm test -- test/artists.e2e.spec.ts",
+    "test-albums": "npm test -- test/albums.e2e.spec.ts",
+    "test-favorites": "npm test -- test/favorites.e2e.spec.ts",
+    "test-tracks": "npm test -- test/tracks.e2e.spec.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.16",
