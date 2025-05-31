@@ -4,10 +4,11 @@ import { UpdateTrackDto } from './dto/update-track.dto';
 import { Track } from './entities/track.entity';
 import { plainToInstance } from 'class-transformer';
 import { randomUUID } from 'crypto';
+import { IDB } from 'src/common/in-memory-database';
 
 @Injectable()
 export class TrackService {
-  private tracks: Track[] = [];
+  private tracks = IDB.tracks;
 
   findAll() {
     return plainToInstance(Track, this.tracks);

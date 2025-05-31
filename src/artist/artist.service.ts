@@ -4,10 +4,11 @@ import { UpdateArtistDto } from './dto/update-artist.dto';
 import { Artist } from './entities/artist.entity';
 import { plainToInstance } from 'class-transformer';
 import { randomUUID } from 'node:crypto';
+import { IDB } from 'src/common/in-memory-database';
 
 @Injectable()
 export class ArtistService {
-  private artists: Artist[] = [];
+  private artists = IDB.artists;
 
   findAll() {
     return plainToInstance(Artist, this.artists);

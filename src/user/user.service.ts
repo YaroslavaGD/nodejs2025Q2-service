@@ -8,10 +8,11 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { randomUUID } from 'node:crypto';
 import { plainToInstance } from 'class-transformer';
+import { IDB } from 'src/common/in-memory-database';
 
 @Injectable()
 export class UserService {
-  private users: User[] = [];
+  private users = IDB.users;
 
   findAll() {
     return plainToInstance(User, this.users);

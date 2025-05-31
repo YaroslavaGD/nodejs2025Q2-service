@@ -4,10 +4,11 @@ import { UpdateAlbumDto } from './dto/update-album.dto';
 import { Album } from './entities/album.entity';
 import { plainToInstance } from 'class-transformer';
 import { randomUUID } from 'node:crypto';
+import { IDB } from 'src/common/in-memory-database';
 
 @Injectable()
 export class AlbumService {
-  private albums: Album[] = [];
+  private albums = IDB.albums;
 
   findAll() {
     return plainToInstance(Album, this.albums);
