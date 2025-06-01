@@ -3,6 +3,7 @@ import { Album } from '../album/entities/album.entity';
 import { Artist } from '../artist/entities/artist.entity';
 import { Track } from '../track/entities/track.entity';
 import { User } from '../user/entities/user.entity';
+import { Fav } from '../favs/entities/fav.entity';
 
 @Injectable()
 class InMemoryDataBase {
@@ -10,7 +11,7 @@ class InMemoryDataBase {
   artists: Artist[] = [];
   albums: Album[] = [];
   tracks: Track[] = [];
-  // favorites: Favorites = { artists: [], albums: [], tracks: [] };
+  favs: Fav = { artists: [], albums: [], tracks: [] };
 }
 
 export const IDB = new InMemoryDataBase();

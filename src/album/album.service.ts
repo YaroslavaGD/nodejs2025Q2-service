@@ -4,7 +4,7 @@ import { UpdateAlbumDto } from './dto/update-album.dto';
 import { Album } from './entities/album.entity';
 import { plainToInstance } from 'class-transformer';
 import { randomUUID } from 'node:crypto';
-import { IDB } from 'src/common/in-memory-database';
+import { IDB } from '../common/in-memory-database';
 
 @Injectable()
 export class AlbumService {
