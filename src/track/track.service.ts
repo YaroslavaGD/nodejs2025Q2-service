@@ -50,6 +50,32 @@ export class TrackService {
     return plainToInstance(Track, track);
   }
 
+  removeAllAlbumIds(id: string) {
+    this.findAll()
+      .filter((t) => t.albumId === id)
+      .forEach((albumTrack) =>
+        this.update(albumTrack.id, {
+          name: albumTrack.name,
+          duration: albumTrack.duration,
+          artistId: albumTrack.artistId,
+          albumId: null,
+        }),
+      );
+  }
+
+  removeAllArtistIds(id: string) {
+    this.findAll()
+      .filter((t) => t.artistId === id)
+      .forEach((artistTrack) =>
+        this.update(artistTrack.id, {
+          name: artistTrack.name,
+          duration: artistTrack.duration,
+          artistId: null,
+          albumId: artistTrack.albumId,
+        }),
+      );
+  }
+
   remove(id: string) {
     const index = this.tracks.findIndex((t) => t.id === id);
 

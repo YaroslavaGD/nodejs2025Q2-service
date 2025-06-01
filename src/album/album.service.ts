@@ -53,9 +53,21 @@ export class AlbumService {
 
     album.name = dto.name;
     album.year = dto.year;
-    if (dto.artistId) album.artistId = dto.artistId;
+    album.artistId = dto.artistId ? dto.artistId : null;
 
     return plainToInstance(Album, album);
+  }
+
+  removeAllArtistIds(id: string) {
+    this.findAll()
+      .filter((t) => t.artistId === id)
+      .forEach((artistAlbum) =>
+        this.update(artistAlbum.id, {
+          name: artistAlbum.name,
+          year: artistAlbum.year,
+          artistId: null,
+        }),
+      );
   }
 
   remove(id: string) {
@@ -64,18 +76,7 @@ export class AlbumService {
     if (index === -1)
       throw new NotFoundException(`Album with id ${id} not found`);
 
-    // this.favsService.removeAlbum(id);
-    this.tracksService
-      .findAll()
-      .filter((t) => t.albumId === id)
-      .forEach((artitsTrack) =>
-        this.tracksService.update(artitsTrack.id, {
-          name: artitsTrack.name,
-          duration: artitsTrack.duration,
-          artistId: artitsTrack.artistId,
-          albumId: null,
-        }),
-      );
+    this.tracksService.removeAllAlbumIds(id);
 
     this.albums.splice(index, 1);
   }
