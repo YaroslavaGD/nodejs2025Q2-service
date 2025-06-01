@@ -44,8 +44,8 @@ export class TrackService {
     track.name = dto.name;
     track.duration = dto.duration;
 
-    if (dto.artistId) track.artistId = dto.artistId;
-    if (dto.albumId) track.albumId = dto.albumId;
+    track.artistId = dto.artistId ? dto.artistId : null;
+    track.albumId = dto.albumId ? dto.albumId : null;
 
     return plainToInstance(Track, track);
   }
