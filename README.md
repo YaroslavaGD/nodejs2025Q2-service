@@ -8,13 +8,16 @@
 ## Downloading
 
 ```
-git clone {repository URL}
-```
-
-## Installing NPM modules
-
-```
+git clone https://github.com/YaroslavaGD/nodejs2025Q2-service.git
+cd nodejs2025Q2-service
+git checkout dev
 npm install
+```
+
+## Create .env file (based on .env.example)
+
+```
+./.env
 ```
 
 ## Running application
@@ -43,16 +46,14 @@ To run only one of all test suites
 npm run test -- <path to suite>
 ```
 
-To run all test with authorization
+or
 
 ```
-npm run test:auth
-```
-
-To run only specific test suite with authorization
-
-```
-npm run test:auth -- <path to suite>
+npm run test-users
+npm run test-tracks
+npm run test-albums
+npm run test-artists
+npm run test-favorites
 ```
 
 ### Auto-fix and format
@@ -70,3 +71,20 @@ npm run format
 Press <kbd>F5</kbd> to debug.
 
 For more information, visit: https://code.visualstudio.com/docs/editor/debugging
+
+## Project Structure
+
+**Modules:** User, Artist, Album, Track, Favorites
+
+### Features:
+
+- CRUD operations for Users, Artists, Albums, Tracks
+- Add/remove favorites (Artists, Albums, Tracks)
+- Input data validation
+- Proper HTTP status code responses
+- In-memory data storage (to be replaced with DB in future tasks)
+
+## 📖 Notes
+
+- The repository created from [this template](https://github.com/rolling-scopes-school/nodejs-course-template/generate)
+- Repository name: `nodejs2025Q2-service`
