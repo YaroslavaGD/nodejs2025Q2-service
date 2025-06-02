@@ -8,7 +8,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { randomUUID } from 'node:crypto';
 import { plainToInstance } from 'class-transformer';
-import { IDB } from 'src/common/in-memory-database';
+import { IDB } from '../common/in-memory-database';
 
 @Injectable()
 export class UserService {

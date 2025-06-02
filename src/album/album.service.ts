@@ -10,7 +10,8 @@ import { Album } from './entities/album.entity';
 import { plainToInstance } from 'class-transformer';
 import { randomUUID } from 'node:crypto';
 import { IDB } from '../common/in-memory-database';
-import { TrackService } from 'src/track/track.service';
+import { TrackService } from '../track/track.service';
+import { FavsService } from '../favs/favs.service';
 
 @Injectable()
 export class AlbumService {
@@ -19,6 +20,8 @@ export class AlbumService {
   constructor(
     @Inject(forwardRef(() => TrackService))
     private readonly tracksService: TrackService,
+    @Inject(forwardRef(() => TrackService))
+    private readonly favsService: FavsService,
   ) {}
 
   findAll() {
@@ -30,7 +33,7 @@ export class AlbumService {
 
     if (!album) throw new NotFoundException(`Album with id ${id} not found`);
 
-    return plainToInstance(Album, album);
+    return album ? plainToInstance(Album, album) : null;
   }
 
   create(dto: CreateAlbumDto) {
@@ -75,9 +78,10 @@ export class AlbumService {
 
     if (index === -1)
       throw new NotFoundException(`Album with id ${id} not found`);
-
-    this.tracksService.removeAllAlbumIds(id);
-
     this.albums.splice(index, 1);
+    try {
+      this.tracksService.removeAllAlbumIds(id);
+      this.favsService.removeAlbum(id);
+    } catch {}
   }
 }

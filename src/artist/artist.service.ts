@@ -12,6 +12,7 @@ import { randomUUID } from 'node:crypto';
 import { IDB } from '../common/in-memory-database';
 import { TrackService } from '../track/track.service';
 import { AlbumService } from '../album/album.service';
+import { FavsService } from '../favs/favs.service';
 
 @Injectable()
 export class ArtistService {
@@ -22,6 +23,8 @@ export class ArtistService {
     private readonly tracksService: TrackService,
     @Inject(forwardRef(() => AlbumService))
     private readonly albumsService: AlbumService,
+    @Inject(forwardRef(() => FavsService))
+    private readonly favsService: FavsService,
   ) {}
 
   findAll() {
@@ -33,7 +36,7 @@ export class ArtistService {
 
     if (!artist) throw new NotFoundException(`Artist with id ${id} not found`);
 
-    return plainToInstance(Artist, artist);
+    return artist ? plainToInstance(Artist, artist) : null;
   }
 
   create(dto: CreateArtistDto) {
@@ -63,9 +66,12 @@ export class ArtistService {
 
     if (index === -1)
       throw new NotFoundException(`Artist with id ${id} not found`);
-
-    this.tracksService.removeAllArtistIds(id);
-    this.albumsService.removeAllArtistIds(id);
     this.artists.splice(index, 1);
+
+    try {
+      this.tracksService.removeAllArtistIds(id);
+      this.albumsService.removeAllArtistIds(id);
+      this.favsService.removeArtist(id);
+    } catch {}
   }
 }

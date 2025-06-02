@@ -1,14 +1,25 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { Track } from './entities/track.entity';
 import { plainToInstance } from 'class-transformer';
 import { randomUUID } from 'crypto';
-import { IDB } from 'src/common/in-memory-database';
+import { IDB } from '../common/in-memory-database';
+import { FavsService } from '../favs/favs.service';
 
 @Injectable()
 export class TrackService {
   private tracks = IDB.tracks;
+
+  constructor(
+    @Inject(forwardRef(() => FavsService))
+    private readonly favsService: FavsService,
+  ) {}
 
   findAll() {
     return plainToInstance(Track, this.tracks);
@@ -19,7 +30,7 @@ export class TrackService {
 
     if (!track) throw new NotFoundException(`Track with id ${id} not found`);
 
-    return plainToInstance(Track, track);
+    return track ? plainToInstance(Track, track) : null;
   }
 
   create(dto: CreateTrackDto) {
@@ -83,5 +94,9 @@ export class TrackService {
       throw new NotFoundException(`Track with id ${id} not found`);
 
     this.tracks.splice(index, 1);
+
+    try {
+      this.favsService.removeTrack(id);
+    } catch {}
   }
 }
