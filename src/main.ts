@@ -5,8 +5,10 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { SwaggerModule } from '@nestjs/swagger';
 import { parse } from 'yaml';
+import { config } from 'dotenv';
 
 async function bootstrap() {
+  config();
   const PORT = Number(process.env.PORT) || 4000;
   const app = await NestFactory.create(AppModule);
 
